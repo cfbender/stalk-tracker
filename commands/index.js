@@ -1,0 +1,7 @@
+module.exports = {
+  Ping: require("./ping"),
+  Stats: require("./stats"),
+  Selling: require("./selling"),
+  Buying: require("./buying"),
+  Help: require("./help")
+};

@@ -1,0 +1,33 @@
+{
+  "highestNookPriceEver": {
+    "user": "waxpoetik",
+    "value": 596,
+    "date": "3/29/2020"
+  },
+  "lowestNookPriceEver": {
+    "value": 47,
+    "date": "3/25/2020",
+    "user": "waxpoetik"
+  },
+  "highestDaisyPriceEver": {
+    "user": "waxpoetik",
+    "value": "420",
+    "date": "3/29/2020"
+  },
+  "lowestDaisyPriceEver": {
+    "user": "waxpoetik",
+    "value": 90,
+    "date": "3/29/2020"
+  },
+  "today": {
+    "date": "3/29/2020",
+    "bestPrice": { "user": "waxpoetik", "value": 596 },
+    "allPrices": [
+      { "user": "waxpoetik", "value": 420 },
+      { "user": "waxpoetik", "value": 90 },
+      { "user": "waxpoetik", "value": 419 },
+      { "user": "waxpoetik", "value": 420 },
+      { "user": "waxpoetik", "value": 596 }
+    ]
+  }
+}
