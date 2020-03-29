@@ -9,5 +9,8 @@
     "dotenv": "^8.2.0",
     "fs-extra": "^9.0.0",
     "moment": "^2.24.0"
+  },
+  "scripts": {
+    "start": "node index.js"
   }
 }
