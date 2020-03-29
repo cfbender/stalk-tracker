@@ -51,7 +51,7 @@ module.exports = async (msg, price, npc) => {
     message += ` First price of today registered.`;
   }
 
-  statsClone.today.allPrices.push(data);
+  statsClone.today.allPrices.push({ user, value, type });
 
   switch (npc) {
     case "Nook":
