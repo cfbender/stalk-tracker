@@ -51,6 +51,8 @@ module.exports = async (msg, price, npc) => {
     message += ` First price of today registered.`;
   }
 
+  statsClone.today.allPrices.push(data);
+
   switch (npc) {
     case "Nook":
       if (price > stats.today.bestPrice.value) {
@@ -73,7 +75,6 @@ module.exports = async (msg, price, npc) => {
         message += ` New lowest today!`;
         const data = { user, value, type };
         statsClone.today.bestPrice = data;
-        statsClone.today.allPrices.push(data);
       }
 
       if (price < stats.lowestDaisyPriceEver.value) {
