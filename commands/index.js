@@ -3,5 +3,6 @@ module.exports = {
   Stats: require("./stats"),
   Selling: require("./selling"),
   Buying: require("./buying"),
-  Help: require("./help")
+  Help: require("./help"),
+  Reset: require("./reset")
 };

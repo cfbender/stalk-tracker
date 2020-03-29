@@ -50,7 +50,8 @@ const execute = async (msg, [price]) => {
   if (price < stats.lowestNookPriceEver.value) {
     statsClone.lowestNookPriceEver = priceData;
     message += ` New lowest Nook price ever!`;
-  } else if (price > stats.highestNookPriceEver.value) {
+  }
+  if (price > stats.highestNookPriceEver.value) {
     statsClone.highestNookPriceEver = priceData;
     message += ` New highest Nook price ever!`;
   }

@@ -52,7 +52,8 @@ const execute = async (msg, [price]) => {
   if (price < stats.lowestDaisyPriceEver.value) {
     statsClone.lowestDaisyPriceEver = priceData;
     message += ` New lowest Daisy price ever!`;
-  } else if (price > stats.highestDaisyPriceEver.value) {
+  }
+  if (price > stats.highestDaisyPriceEver.value) {
     statsClone.highestDaisyPriceEver = priceData;
     message += ` New highest Daisy price ever!`;
   }
