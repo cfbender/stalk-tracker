@@ -4,5 +4,6 @@ module.exports = {
   Selling: require("./selling"),
   Buying: require("./buying"),
   Help: require("./help"),
-  Reset: require("./reset")
+  Reset: require("./reset"),
+  Today: require("./today")
 };

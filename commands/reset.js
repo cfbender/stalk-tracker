@@ -36,7 +36,7 @@ const execute = async (msg, args) => {
     },
     today: {
       date: newDate,
-      bestPrice: { user: user, value: 0 },
+      bestPrice: { user: user, value: 0, type: "Reset" },
       allPrices: []
     }
   };
