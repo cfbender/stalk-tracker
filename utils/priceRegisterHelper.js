@@ -36,7 +36,7 @@ module.exports = async (msg, price, npc) => {
   const type =
     npc === "Daisy"
       ? "Daisy"
-      : parseInt(currentTime.format("H")) < 12
+      : currentTime.hour() < 12
       ? "Nook (Morning)"
       : "Nook (Afternoon)";
   const priceData = { user, value, date, type };
@@ -46,6 +46,7 @@ module.exports = async (msg, price, npc) => {
     oldDate.format("MMMM Do YYYY, h:mm:ss a")
   );
   if (currentTime.isAfter(oldDate.add(1, "d"))) {
+    console.log(oldDate.format("MMMM Do YYYY, h:mm:ss a"));
     statsClone.today = {
       date,
       bestPrice: { user, value, type },
