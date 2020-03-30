@@ -18,7 +18,7 @@ const execute = async (msg, args) => {
 };
 
 module.exports = {
-  name: "logData",
+  name: "log_data",
   description: "Logs out all data",
   execute
 };
