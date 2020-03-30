@@ -45,7 +45,7 @@ module.exports = async (msg, price, npc) => {
     statsClone.today = {
       date,
       bestPrice: { user, value, type },
-      allPrices: [{ user, value, type }]
+      allPrices: []
     };
 
     message += ` First price of today registered.`;
