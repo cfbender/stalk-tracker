@@ -41,14 +41,10 @@ module.exports = async (msg, price, npc) => {
       : "Nook (Afternoon)";
   const priceData = { user, value, date, type };
 
-  console.log(
-    currentTime.format("MMMM Do YYYY, h:mm:ss a"),
-    oldDate.format("MMMM Do YYYY, h:mm:ss a")
-  );
+  console.log(currentTime.format("MMMM Do YYYY, h:mm:ss a"));
 
   const nextDay = oldDate.add(1, "d");
   if (currentTime.isAfter(nextDay, "day")) {
-    console.log(nextDay.format("MMMM Do YYYY, h:mm:ss a"));
     statsClone.today = {
       date,
       bestPrice: { user, value, type },
