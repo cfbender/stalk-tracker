@@ -5,5 +5,6 @@ module.exports = {
   Buying: require("./buying"),
   Help: require("./help"),
   Reset: require("./reset"),
-  Today: require("./today")
+  Today: require("./today"),
+  LogData: require("./logData")
 };
