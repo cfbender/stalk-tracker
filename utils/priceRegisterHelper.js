@@ -46,8 +46,9 @@ module.exports = async (msg, price, npc) => {
     oldDate.format("MMMM Do YYYY, h:mm:ss a")
   );
 
-  if (currentTime.isAfter(oldDate, "day")) {
-    console.log(oldDate.format("MMMM Do YYYY, h:mm:ss a"));
+  const nextDay = oldDate.add(1, "d");
+  if (currentTime.isAfter(nextDay, "day")) {
+    console.log(nextDay.format("MMMM Do YYYY, h:mm:ss a"));
     statsClone.today = {
       date,
       bestPrice: { user, value, type },
