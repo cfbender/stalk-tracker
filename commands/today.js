@@ -26,7 +26,7 @@ const execute = async (msg, args) => {
           )
           .addField(
             "**All Prices**",
-            stats.today.allPrices.length
+            stats.today.allPrices.length > 0
               ? stats.today.allPrices
                   .map(data => `${data.value} by ${data.user} (${data.type})`)
                   .join("\n")
