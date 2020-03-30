@@ -59,7 +59,6 @@ module.exports = async (msg, price, npc) => {
         message += ` New highest today!`;
         const data = { user, value, type };
         statsClone.today.bestPrice = data;
-        statsClone.today.allPrices.push(data);
       }
       if (price < stats.lowestNookPriceEver.value) {
         statsClone.lowestNookPriceEver = priceData;
