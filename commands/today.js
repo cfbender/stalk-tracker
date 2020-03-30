@@ -1,6 +1,6 @@
 const fs = require("fs-extra");
 const Discord = require("discord.js");
-const moment = require("moment");
+const moment = require("moment-timezone");
 const execute = async (msg, args) => {
   let stats;
 
@@ -12,7 +12,9 @@ const execute = async (msg, args) => {
   }
 
   const embed =
-    moment().format("dddd") === "Sunday"
+    moment()
+      .tz(process.env.TIMEZONE)
+      .format("dddd") === "Sunday"
       ? new Discord.MessageEmbed()
           .setTitle(`Today's Turnips (${stats.today.date})`)
           .setColor(0x00ae86)
@@ -45,21 +47,24 @@ const execute = async (msg, args) => {
           )
           .addField(
             "**Morning Prices**",
-            stats.today.allPrices.length
+            stats.today.allPrices.filter(item => item.type === "Nook (Morning)")
+              .length > 0
               ? stats.today.allPrices
                   .filter(item => item.type === "Nook (Morning)")
                   .map(data => `${data.value} by ${data.user} (${data.type})`)
                   .join("\n")
-              : "No prices today yet!"
+              : "No morning prices today yet!"
           )
           .addField(
             "**Morning Prices**",
-            stats.today.allPrices.length
+            stats.today.allPrices.filter(
+              item => item.type === "Nook (Afternoon)"
+            ).length > 0
               ? stats.today.allPrices
                   .filter(item => item.type === "Nook (Afternoon)")
                   .map(data => `${data.value} by ${data.user} (${data.type})`)
                   .join("\n")
-              : "No prices today yet!"
+              : "No afternoon prices today yet!"
           );
 
   msg.channel.send(embed);
