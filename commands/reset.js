@@ -10,7 +10,7 @@ const execute = async (msg, args) => {
   }
   const user = msg.author.username;
   const newDate = moment()
-    .subtract(1, "d")
+    .subtract(2, "d")
     .format("M/D/YYYY");
 
   let resetData = {
@@ -21,7 +21,7 @@ const execute = async (msg, args) => {
     },
     lowestNookPriceEver: {
       value: 99999999,
-      date: "3/25/2020",
+      date: newDate,
       user: user
     },
     highestDaisyPriceEver: {

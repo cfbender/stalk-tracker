@@ -19,12 +19,12 @@ module.exports = async (msg, price, npc) => {
 
   let statsClone = { ...stats };
 
-  const today = moment().tz(process.env.TIMEZONE);
+  const currentTime = moment().tz(process.env.TIMEZONE);
 
   //check for day of week
-  if (today.format("dddd") === "Sunday" && npc === "Nook") {
+  if (currentTime.format("dddd") === "Sunday" && npc === "Nook") {
     return "You can't register Nook prices on Sundays.";
-  } else if (today.format("dddd") !== "Sunday" && npc === "Daisy") {
+  } else if (currentTime.format("dddd") !== "Sunday" && npc === "Daisy") {
     return "You can't register Daisy prices except on Sundays.";
   }
 
@@ -32,16 +32,16 @@ module.exports = async (msg, price, npc) => {
   let message = `Price registered at ${price}.`;
   const user = msg.author.username;
   const value = price;
-  const date = today.format("M/D/YYYY");
+  const date = currentTime.format("M/D/YYYY");
   const type =
     npc === "Daisy"
       ? "Daisy"
-      : parseInt(today.format("H")) < 12
+      : parseInt(currentTime.format("H")) < 12
       ? "Nook (Morning)"
       : "Nook (Afternoon)";
   const priceData = { user, value, date, type };
 
-  if (today.isAfter(oldDate.add(1, "d"))) {
+  if (currentTime.isAfter(oldDate.add(1, "d"))) {
     statsClone.today = {
       date,
       bestPrice: { user, value, type },
