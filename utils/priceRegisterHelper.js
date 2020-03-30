@@ -28,7 +28,7 @@ module.exports = async (msg, price, npc) => {
     return "You can't register Daisy prices except on Sundays.";
   }
 
-  const oldDate = moment(stats.today.date, "M/D/YYYY").tz(process.env.TIMEZONE);
+  const oldDate = moment(stats.today.date, "M/D/YYYY");
   let message = `Price registered at ${price}.`;
   const user = msg.author.username;
   const value = price;
