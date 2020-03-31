@@ -1,7 +1,7 @@
 const fs = require("fs-extra");
 const moment = require("moment-timezone");
 
-module.exports = async (msg, price, npc) => {
+module.exports = async (msg, price, npc, updateChannel) => {
   price = parseInt(price);
 
   if (!price || isNaN(price)) {
@@ -30,6 +30,7 @@ module.exports = async (msg, price, npc) => {
 
   const oldDate = moment(stats.today.date, "M/D/YYYY");
   let message = `Price registered at ${price}.`;
+  let update = false;
   const user = msg.author.username;
   const value = price;
   const date = currentTime.format("M/D/YYYY");
@@ -59,31 +60,37 @@ module.exports = async (msg, price, npc) => {
   switch (npc) {
     case "Nook":
       if (price > stats.today.bestPrice.value) {
+        update = true;
         message += ` New highest today!`;
         const data = { user, value, type };
         statsClone.today.bestPrice = data;
       }
       if (price < stats.lowestNookPriceEver.value) {
+        update = true;
         statsClone.lowestNookPriceEver = priceData;
         message += ` New lowest Nook price ever!`;
       }
       if (price > stats.highestNookPriceEver.value) {
+        update = true;
         statsClone.highestNookPriceEver = priceData;
         message += ` New highest Nook price ever!`;
       }
       break;
     case "Daisy":
       if (price < stats.today.bestPrice.value) {
+        update = true;
         message += ` New lowest today!`;
         const data = { user, value, type };
         statsClone.today.bestPrice = data;
       }
 
       if (price < stats.lowestDaisyPriceEver.value) {
+        update = true;
         statsClone.lowestDaisyPriceEver = priceData;
         message += ` New lowest Daisy price ever!`;
       }
       if (price > stats.highestDaisyPriceEver.value) {
+        update = true;
         statsClone.highestDaisyPriceEver = priceData;
         message += ` New highest Daisy price ever!`;
       }
@@ -95,6 +102,10 @@ module.exports = async (msg, price, npc) => {
     console.log("Wrote data to data.json");
   } catch (error) {
     console.log(error);
+  }
+
+  if (update) {
+    updateChannel.send(message);
   }
 
   return message;

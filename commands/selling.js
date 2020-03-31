@@ -1,7 +1,7 @@
 const helper = require("../utils/priceRegisterHelper");
 
-const execute = async (msg, [price]) => {
-  const message = await helper(msg, price, "Daisy");
+const execute = async (msg, [price], updateChannel) => {
+  const message = await helper(msg, price, "Daisy", updateChannel);
   msg.channel.send(message);
 };
 
