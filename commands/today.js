@@ -56,7 +56,7 @@ const execute = async (msg, args) => {
               : "No morning prices today yet!"
           )
           .addField(
-            "**Morning Prices**",
+            "**Afternoon Prices**",
             stats.today.allPrices.filter(
               item => item.type === "Nook (Afternoon)"
             ).length > 0

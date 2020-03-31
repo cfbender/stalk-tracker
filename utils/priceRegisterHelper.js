@@ -1,5 +1,7 @@
 const fs = require("fs-extra");
 const moment = require("moment-timezone");
+const statsCommand = require("../commands/stats");
+const todayCommand = require("../commands/today");
 
 module.exports = async (msg, price, npc, updateChannel) => {
   price = parseInt(price);
@@ -30,7 +32,8 @@ module.exports = async (msg, price, npc, updateChannel) => {
 
   const oldDate = moment(stats.today.date, "M/D/YYYY");
   let message = `Price registered at ${price}.`;
-  let update = false;
+  let updateAllTime = false;
+  let updateToday = false;
   const user = msg.author.username;
   const value = price;
   const date = currentTime.format("M/D/YYYY");
@@ -60,37 +63,37 @@ module.exports = async (msg, price, npc, updateChannel) => {
   switch (npc) {
     case "Nook":
       if (price > stats.today.bestPrice.value) {
-        update = true;
+        updateToday = true;
         message += ` New highest today!`;
         const data = { user, value, type };
         statsClone.today.bestPrice = data;
       }
       if (price < stats.lowestNookPriceEver.value) {
-        update = true;
+        updateAllTime = true;
         statsClone.lowestNookPriceEver = priceData;
         message += ` New lowest Nook price ever!`;
       }
       if (price > stats.highestNookPriceEver.value) {
-        update = true;
+        updateAllTime = true;
         statsClone.highestNookPriceEver = priceData;
         message += ` New highest Nook price ever!`;
       }
       break;
     case "Daisy":
       if (price < stats.today.bestPrice.value) {
-        update = true;
+        updateToday = true;
         message += ` New lowest today!`;
         const data = { user, value, type };
         statsClone.today.bestPrice = data;
       }
 
       if (price < stats.lowestDaisyPriceEver.value) {
-        update = true;
+        updateAllTime = true;
         statsClone.lowestDaisyPriceEver = priceData;
         message += ` New lowest Daisy price ever!`;
       }
       if (price > stats.highestDaisyPriceEver.value) {
-        update = true;
+        updateAllTime = true;
         statsClone.highestDaisyPriceEver = priceData;
         message += ` New highest Daisy price ever!`;
       }
@@ -104,8 +107,15 @@ module.exports = async (msg, price, npc, updateChannel) => {
     console.log(error);
   }
 
-  if (update) {
+  if (updateAllTime || updateToday) {
     updateChannel.send(message);
+    if (updateAllTime) {
+      statsCommand.execute({ channel: updateChannel });
+    }
+
+    if (updateToday) {
+      todayCommand.execute({ channel: updateChannel });
+    }
   }
 
   return message;

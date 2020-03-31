@@ -1,7 +1,7 @@
 const fs = require("fs-extra");
 const Discord = require("discord.js");
 
-const execute = async (msg, args) => {
+const execute = async msg => {
   let stats;
 
   try {
