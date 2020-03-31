@@ -34,6 +34,7 @@ module.exports = async (msg, price, npc, updateChannel) => {
   let message = `Price registered at ${price}.`;
   let updateAllTime = false;
   let updateToday = false;
+  const sendUpdates = process.env.SEND_UPDATES;
   const user = msg.author.username;
   const value = price;
   const date = currentTime.format("M/D/YYYY");
@@ -107,14 +108,16 @@ module.exports = async (msg, price, npc, updateChannel) => {
     console.log(error);
   }
 
-  if (updateAllTime || updateToday) {
-    updateChannel.send(message);
-    if (updateAllTime) {
-      statsCommand.execute({ channel: updateChannel });
-    }
+  if (sendUpdates) {
+    if (updateAllTime || updateToday) {
+      updateChannel.send(message);
+      if (updateAllTime) {
+        statsCommand.execute({ channel: updateChannel });
+      }
 
-    if (updateToday) {
-      todayCommand.execute({ channel: updateChannel });
+      if (updateToday) {
+        todayCommand.execute({ channel: updateChannel });
+      }
     }
   }
 
