@@ -1,71 +1,85 @@
-const fs = require("fs-extra");
 const Discord = require("discord.js");
 const moment = require("moment-timezone");
-const execute = async (msg, args) => {
-  let stats;
+const sortBy = require("lodash.sortby");
 
+const execute = async ({ msg, Price }) => {
+  let allPrices;
+  const currentTime = moment().tz(process.env.TIMEZONE);
   try {
-    stats = await fs.readJson("./data.json");
-    console.log("data.json read in");
+    allPrices = await Price.find({}).exec();
   } catch (err) {
     console.error(err);
   }
 
+  const isSunday = currentTime.format("dddd") === "Sunday";
+
+  const todaysPrices = allPrices.filter(
+    ({ date }) =>
+      moment(date).format("MM/D/YYYY") === currentTime.format("MM/D/YYYY")
+  );
+
+  const bestPrice = sortBy(todaysPrices, ["price"])[todaysPrices.length - 1];
+
+  console.log(bestPrice);
   const embed =
-    moment()
-      .tz(process.env.TIMEZONE)
-      .format("dddd") === "Sunday"
-      ? new Discord.MessageEmbed()
-          .setTitle(`Today's Turnips (${stats.today.date})`)
-          .setColor(0x00ae86)
-          .setThumbnail(
-            "https://vignette3.wikia.nocookie.net/animalcrossing/images/b/b7/Turnip.png/revision/latest?cb=20100726212427"
-          )
-          .setTimestamp()
-          .addField(
-            "**Best Price**",
-            `${stats.today.bestPrice.value} by ${stats.today.bestPrice.user} (${stats.today.bestPrice.type})`
-          )
-          .addField(
-            "**All Prices**",
-            stats.today.allPrices.length > 0
-              ? stats.today.allPrices
-                  .map(data => `${data.value} by ${data.user} (${data.type})`)
-                  .join("\n")
-              : "No prices today yet!"
-          )
-      : new Discord.MessageEmbed()
-          .setTitle(`Today's Turnips (${stats.today.date})`)
-          .setColor(0x00ae86)
-          .setThumbnail(
-            "https://vignette3.wikia.nocookie.net/animalcrossing/images/b/b7/Turnip.png/revision/latest?cb=20100726212427"
-          )
-          .setTimestamp()
-          .addField(
-            "**Best Price**",
-            `${stats.today.bestPrice.value} by ${stats.today.bestPrice.user} (${stats.today.bestPrice.type})`
-          )
-          .addField(
-            "**Morning Prices**",
-            stats.today.allPrices.filter(item => item.type === "Nook (Morning)")
-              .length > 0
-              ? stats.today.allPrices
-                  .filter(item => item.type === "Nook (Morning)")
-                  .map(data => `${data.value} by ${data.user} (${data.type})`)
-                  .join("\n")
-              : "No morning prices today yet!"
-          )
-          .addField(
-            "**Afternoon Prices**",
-            stats.today.allPrices.filter(
-              item => item.type === "Nook (Afternoon)"
-            ).length > 0
-              ? stats.today.allPrices
-                  .filter(item => item.type === "Nook (Afternoon)")
-                  .map(data => `${data.value} by ${data.user} (${data.type})`)
-                  .join("\n")
-              : "No afternoon prices today yet!"
-          );
+    todaysPrices.length > 0
+      ? isSunday
+        ? new Discord.MessageEmbed()
+            .setTitle(
+              `Today's Turnips (${moment(bestPrice.date).format("MM/D/YYYY")})`
+            )
+            .setColor(0x00ae86)
+            .setThumbnail(
+              "https://vignette3.wikia.nocookie.net/animalcrossing/images/b/b7/Turnip.png/revision/latest?cb=20100726212427"
+            )
+            .setTimestamp()
+            .addField(
+              "**Best Price**",
+              `${bestPrice.price} by ${bestPrice.user} [${bestPrice.timing}]`
+            )
+            .addField(
+              "**All Prices**",
+              todaysPrices
+                .map(data => `${data.price} by ${data.user}`)
+                .join("\n")
+            )
+        : new Discord.MessageEmbed()
+            .setTitle(
+              `Today's Turnips (${moment(bestPrice.date).format("MM/D/YYYY")})`
+            )
+            .setColor(0x00ae86)
+            .setThumbnail(
+              "https://vignette3.wikia.nocookie.net/animalcrossing/images/b/b7/Turnip.png/revision/latest?cb=20100726212427"
+            )
+            .setTimestamp()
+            .addField(
+              "**Best Price**",
+              `${bestPrice.price} by ${bestPrice.user} (${bestPrice.timing})`
+            )
+            .addField(
+              "**Morning Prices**",
+              todaysPrices.filter(item => item.timing === "Morning").length > 0
+                ? todaysPrices
+                    .filter(item => item.timing === "Morning")
+                    .map(
+                      data => `${data.price} by ${data.user} (${data.timing})`
+                    )
+                    .join("\n")
+                : "No morning prices today yet!"
+            )
+            .addField(
+              "**Afternoon Prices**",
+              todaysPrices.filter(item => item.timing === "Afternoon").length >
+                0
+                ? todaysPrices
+                    .filter(item => item.timing === "Afternoon")
+                    .map(
+                      data => `${data.price} by ${data.user} (${data.timing})`
+                    )
+                    .join("\n")
+                : "No afternoon prices today yet!"
+            )
+      : "No prices recorded today yet! Use `stalk! help` for commands to register prices";
 
   msg.channel.send(embed);
 };

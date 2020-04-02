@@ -1,13 +1,16 @@
 require("dotenv").config();
+const mongoose = require("mongoose");
 const Discord = require("discord.js");
 const botCommands = require("./commands");
 const TOKEN = process.env.TOKEN;
-
+const { Price } = require("./models");
 const bot = new Discord.Client();
 bot.login(TOKEN);
 
 let commandChannel;
 let updateChannel;
+
+mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true });
 
 bot.on("ready", async () => {
   console.info(`Logged in as ${bot.user.tag}!`);
@@ -36,7 +39,7 @@ bot.on("message", msg => {
   if (!bot.commands.has(command)) return;
 
   try {
-    bot.commands.get(command).execute(msg, args, updateChannel);
+    bot.commands.get(command).execute({ msg, args, updateChannel, Price });
   } catch (error) {
     console.error(error);
     msg.reply("There was an error trying to execute that command!");

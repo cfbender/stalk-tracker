@@ -1,15 +1,29 @@
-const fs = require("fs-extra");
+const moment = require("moment-timezone");
 const Discord = require("discord.js");
+const sortBy = require("lodash.sortby");
 
-const execute = async msg => {
-  let stats;
+const execute = async ({ msg, Price }) => {
+  let allPrices;
 
   try {
-    stats = await fs.readJson("./data.json");
-    console.log("data.json read in");
+    allPrices = await Price.find({}).exec();
   } catch (err) {
     console.error(err);
   }
+
+  const nookPrices = sortBy(
+    allPrices.filter(({ npc }) => npc === "Nook"),
+    ["price"]
+  );
+  const highestNookPrice = nookPrices[nookPrices.length - 1];
+  const lowestNookPrice = nookPrices[0];
+
+  const daisyPrices = sortBy(
+    allPrices.filter(({ npc }) => npc === "Daisy"),
+    ["price"]
+  );
+  const highestDaisyPrice = daisyPrices[daisyPrices.length - 1];
+  const lowestDaisyPrice = daisyPrices[0];
 
   const embed = new Discord.MessageEmbed()
     .setTitle("All Time Turnip Stats")
@@ -20,19 +34,35 @@ const execute = async msg => {
     .setTimestamp()
     .addField(
       "**Highest Nook Price Ever**",
-      `${stats.highestNookPriceEver.value} on ${stats.highestNookPriceEver.date} from ${stats.highestNookPriceEver.user}`
+      nookPrices.length > 0
+        ? `${highestNookPrice.price} on ${moment(lowestNookPrice.date).format(
+            "MM/D/YYYY"
+          )} from ${highestNookPrice.user}`
+        : "No Nook prices recorded yet!"
     )
     .addField(
       "**Lowest Nook Price Ever**",
-      `${stats.lowestNookPriceEver.value} on ${stats.lowestNookPriceEver.date} from ${stats.lowestNookPriceEver.user}`
+      nookPrices.length > 0
+        ? `${lowestNookPrice.price} on ${moment(lowestNookPrice.date).format(
+            "MM/D/YYYY"
+          )} from ${lowestNookPrice.user}`
+        : "No Nook prices recorded yet!"
     )
     .addField(
       "**Highest Daisy Price Ever**",
-      `${stats.highestDaisyPriceEver.value} on ${stats.highestDaisyPriceEver.date} from ${stats.highestDaisyPriceEver.user}`
+      daisyPrices.length > 0
+        ? `${highestDaisyPrice.price} on ${moment(
+            highestDaisyPrice.date
+          ).format("MM/D/YYYY")} from ${highestDaisyPrice.user}`
+        : "No Daisy prices recorded yet!"
     )
     .addField(
       "**Lowest Daisy Price Ever**",
-      `${stats.lowestDaisyPriceEver.value} on ${stats.lowestDaisyPriceEver.date} from ${stats.lowestDaisyPriceEver.user}`
+      daisyPrices.length > 0
+        ? `${lowestDaisyPrice.price} on ${moment(lowestDaisyPrice.date).format(
+            "MM/D/YYYY"
+          )} from ${lowestDaisyPrice.user}`
+        : "No Daisy prices recorded yet!"
     );
 
   msg.channel.send(embed);

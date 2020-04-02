@@ -3,7 +3,7 @@ require("dotenv").config();
 
 const admins = process.env.ADMINS.split(",");
 
-const execute = async (msg, args) => {
+const execute = async ({ msg, Prices }) => {
   if (!admins.includes(msg.author.id)) {
     return msg.channel.send("You are not authorized to use that command.");
   }
