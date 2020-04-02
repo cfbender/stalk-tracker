@@ -17,7 +17,7 @@ const execute = async ({ msg, Price }) => {
   );
   const highestNookPrice = nookPrices[0];
   const lowestNookPrice = nookPrices[nookPrices.length - 1];
-
+  console.log(nookPrices);
   const daisyPrices = sortBy(
     allPrices.filter(({ npc }) => npc === "Daisy"),
     ["price"]
