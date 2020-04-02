@@ -18,9 +18,10 @@ const execute = async ({ msg, Price }) => {
       moment(date).format("MM/D/YYYY") === currentTime.format("MM/D/YYYY")
   );
 
-  const bestPrice = sortBy(todaysPrices, ["price"])[todaysPrices.length - 1];
+  const bestPrice = isSunday
+    ? sortBy(todaysPrices, ["price"])[0]
+    : sortBy(todaysPrices, ["price"])[todaysPrices.length - 1];
 
-  console.log(bestPrice);
   const embed =
     todaysPrices.length > 0
       ? isSunday
