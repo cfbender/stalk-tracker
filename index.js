@@ -10,6 +10,7 @@ bot.login(TOKEN);
 let commandChannel;
 let updateChannel;
 
+mongoose.set("useUnifiedTopology", true);
 mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true });
 
 bot.on("ready", async () => {
