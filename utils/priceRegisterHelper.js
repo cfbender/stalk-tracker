@@ -95,11 +95,11 @@ module.exports = async ({ msg, value, npc, updateChannel, Price }) => {
     if (updateAllTime || updateToday) {
       updateChannel.send(message);
       if (updateAllTime) {
-        statsCommand.execute({ channel: updateChannel });
+        statsCommand.execute({ msg: { channel: updateChannel } });
       }
 
       if (updateToday) {
-        todayCommand.execute({ channel: updateChannel });
+        todayCommand.execute({ msg: { channel: updateChannel } });
       }
     }
   }
