@@ -12,24 +12,14 @@ const execute = async ({ msg, Price }) => {
   }
 
   const nookPrices = sortBy(
-    allPrices
-      .filter(({ npc }) => npc === "Nook")
-      .map(obj => {
-        obj.price = parseInt(obj.price);
-        return obj;
-      }),
+    allPrices.filter(({ npc }) => npc === "Nook"),
     ["price"]
   );
   const highestNookPrice = nookPrices[0];
   const lowestNookPrice = nookPrices[nookPrices.length - 1];
 
   const daisyPrices = sortBy(
-    allPrices
-      .filter(({ npc }) => npc === "Daisy")
-      .map(obj => {
-        obj.price = parseInt(obj.price);
-        return obj;
-      }),
+    allPrices.filter(({ npc }) => npc === "Daisy"),
     ["price"]
   );
   const highestDaisyPrice = daisyPrices[0];

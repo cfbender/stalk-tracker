@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const priceSchema = new mongoose.Schema({
   user: { type: String },
-  price: { type: String },
+  price: { type: Number },
   npc: { type: String },
   timing: { type: String },
   date: { type: Date }
