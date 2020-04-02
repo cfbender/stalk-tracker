@@ -18,9 +18,10 @@ const execute = async ({ msg, Price }) => {
       moment(date).format("MM/D/YYYY") === currentTime.format("MM/D/YYYY")
   );
 
-  const bestPrice = sortBy(todaysPrices, ["price"]).map(
-    obj => (obj.price = parseInt(obj.price))
-  )[todaysPrices.length - 1];
+  const bestPrice = sortBy(todaysPrices, ["price"]).map(obj => {
+    obj.price = parseInt(obj.price);
+    return obj;
+  })[todaysPrices.length - 1];
 
   const embed =
     todaysPrices.length > 0
