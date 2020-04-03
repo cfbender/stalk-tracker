@@ -20,7 +20,9 @@ const execute = async ({ msg, Price }) => {
 
   const bestPrice = isSunday
     ? sortBy(todaysPrices, ["price"])[0]
-    : sortBy(todaysPrices, ["price"])[todaysPrices.length - 1];
+    : sortBy(todaysPrices, ["price"])
+        .slice(-1)
+        .pop();
 
   const embed =
     todaysPrices.length > 0

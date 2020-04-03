@@ -4,26 +4,25 @@ const execute = async ({ msg, args: [npc, value], Alert }) => {
       `${npc} is not a valid npc name. Use \`stalk! alert <daisy || nook>\``
     );
   }
-  let hasAlert;
   const updateData = { [npc.toLowerCase()]: value };
   const alert = await Alert.findOne({ user: msg.author.id }).exec();
-  console.log(alert);
+
+  let hasAlert;
   if (alert) {
+    await alert.update(updateData).exec();
     hasAlert = true;
+  } else {
+    const newAlert = new Alert({ user: msg.author.id, ...updateData });
+    await newAlert.save();
   }
 
-  await alert
-    .update(updateData, {
-      upsert: true
-    })
-    .exec();
-  console.log(npc, value);
   const dmChannel = await msg.author.createDM();
   await dmChannel.send(
     `Price alert ${hasAlert ? "updated" : "registered"} for ${
       npc === "nook" ? "Nook" : "Daisy"
     } at ${value}`
   );
+  msg.react("✅");
 };
 
 module.exports = {

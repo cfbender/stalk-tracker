@@ -15,14 +15,14 @@ const execute = async ({ msg, Price }) => {
     allPrices.filter(({ npc }) => npc === "Nook"),
     ["price"]
   );
-  const highestNookPrice = nookPrices[nookPrices.length - 1];
+  const highestNookPrice = nookPrices.slice(-1).pop();
   const lowestNookPrice = nookPrices[0];
 
   const daisyPrices = sortBy(
     allPrices.filter(({ npc }) => npc === "Daisy"),
     ["price"]
   );
-  const highestDaisyPrice = daisyPrices[daisyPrices.length - 1];
+  const highestDaisyPrice = daisyPrices.slice(-1).pop();
   const lowestDaisyPrice = daisyPrices[0];
 
   const embed = new Discord.MessageEmbed()

@@ -20,6 +20,10 @@ const execute = ({ msg }) => {
     .addField(
       "**Today**",
       "Shows all stats and prices for the last day prices were added. Usage: `stalk! today`"
+    )
+    .addField(
+      "**Alert**",
+      "Will send you a DM when the price threshold is met. Usage: `stalk! alert <nook || daisy> <price>`"
     );
 
   msg.channel.send(embed);

@@ -4,16 +4,18 @@ const execute = async ({
   msg,
   args: [value],
   updateChannel,
-  Prices,
-  Price
+  bot,
+  Price,
+  Alert
 }) => {
   const message = await helper({
     msg,
     value,
     npc: "Nook",
     updateChannel,
-    Prices,
-    Price
+    bot,
+    Price,
+    Alert
   });
   msg.channel.send(message);
 };

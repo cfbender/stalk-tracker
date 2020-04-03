@@ -43,7 +43,7 @@ bot.on("message", msg => {
   try {
     bot.commands
       .get(command)
-      .execute({ msg, args, updateChannel, Price, Alert });
+      .execute({ msg, args, updateChannel, Price, Alert, bot });
   } catch (error) {
     console.error(error);
     msg.reply("There was an error trying to execute that command!");
