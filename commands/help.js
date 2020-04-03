@@ -23,7 +23,7 @@ const execute = ({ msg }) => {
     )
     .addField(
       "**Alert**",
-      "Will send you a DM when the price threshold is met. Usage: `stalk! alert <nook || daisy> <price>`"
+      "Will send you a DM when the price threshold is met. Usage: `stalk! alert <nook || daisy> <price>` to reset: `stalk! alert <nook || daisy> clear`"
     );
 
   msg.channel.send(embed);
