@@ -10,7 +10,7 @@ const execute = async ({ msg, args: [npc, value], Alert }) => {
   let hasAlert;
   if (alert) {
     await alert.update(updateData).exec();
-    hasAlert = alert.hasOwnProperty(npc.toLowerCase());
+    hasAlert = alert.toObject().hasOwnProperty(npc.toLowerCase());
   } else {
     const newAlert = new Alert({ user: msg.author.id, ...updateData });
     await newAlert.save();
