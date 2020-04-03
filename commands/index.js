@@ -1,8 +1,8 @@
 module.exports = {
   Ping: require("./ping"),
   Stats: require("./stats"),
-  Selling: require("./selling"),
-  Buying: require("./buying"),
+  Daisy: require("./daisy"),
+  Nook: require("./nook"),
   Help: require("./help"),
   Reset: require("./reset"),
   Today: require("./today"),

@@ -21,7 +21,7 @@ const execute = async ({
 };
 
 module.exports = {
-  name: "buying",
-  description: "Registers a price for buying from Timmy Nook",
+  name: "nook",
+  description: "Registers a price that Nook is buying for",
   execute
 };

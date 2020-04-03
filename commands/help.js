@@ -10,12 +10,12 @@ const execute = ({ msg }) => {
     .setTimestamp()
     .addField("**Stats**", "Shows all-time stats. Usage: `stalk! stats`")
     .addField(
-      "**Selling**",
-      "Registers a price from Daisy Mae. Usage: `stalk! selling <price>`"
+      "**Daisy**",
+      "Registers a price from Daisy Mae. Usage: `stalk! daisy <price>`"
     )
     .addField(
-      "**Buying**",
-      "Registers a price from Timmy Nook. Usage: `stalk! buying <price>`"
+      "**Nook**",
+      "Registers a price from Timmy Nook. Usage: `stalk! nook <price>`"
     )
     .addField(
       "**Today**",
