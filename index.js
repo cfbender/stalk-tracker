@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const Discord = require("discord.js");
 const botCommands = require("./commands");
 const TOKEN = process.env.TOKEN;
-const { Price } = require("./models");
+const { Price, Alert } = require("./models");
 const bot = new Discord.Client();
 bot.login(TOKEN);
 
@@ -11,6 +11,7 @@ let commandChannel;
 let updateChannel;
 
 mongoose.set("useUnifiedTopology", true);
+mongoose.set("useFindAndModify", false);
 mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true });
 
 bot.on("ready", async () => {
@@ -40,7 +41,9 @@ bot.on("message", msg => {
   if (!bot.commands.has(command)) return;
 
   try {
-    bot.commands.get(command).execute({ msg, args, updateChannel, Price });
+    bot.commands
+      .get(command)
+      .execute({ msg, args, updateChannel, Price, Alert });
   } catch (error) {
     console.error(error);
     msg.reply("There was an error trying to execute that command!");

@@ -6,5 +6,6 @@ module.exports = {
   Help: require("./help"),
   Reset: require("./reset"),
   Today: require("./today"),
-  LogData: require("./logData")
+  LogData: require("./logData"),
+  Alert: require("./alert")
 };
