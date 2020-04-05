@@ -5,6 +5,7 @@ const sortBy = require("lodash.sortby");
 const execute = async ({ msg, Price }) => {
   let allPrices;
   const currentTime = moment().tz(process.env.TIMEZONE);
+
   try {
     allPrices = await Price.find({}).exec();
   } catch (err) {
@@ -13,10 +14,11 @@ const execute = async ({ msg, Price }) => {
 
   const isSunday = currentTime.format("dddd") === "Sunday";
 
-  const todaysPrices = allPrices.filter(
-    ({ date }) =>
-      moment(date).format("MM/D/YYYY") === currentTime.format("MM/D/YYYY")
-  );
+  const todaysPrices = allPrices.filter(({ date }) => {
+    // from the docs: moment().isSame() has undefined behavior and should not be used!
+    const dateMoment = moment(date);
+    return dateMoment.isSame(currentTime, "day");
+  });
 
   const bestPrice = isSunday
     ? sortBy(todaysPrices, ["price"])[0]
