@@ -14,10 +14,12 @@ const execute = async ({ msg, Price }) => {
 
   const isSunday = currentTime.format("dddd") === "Sunday";
 
-  const todaysPrices = allPrices.filter(({ date }) => {
+  const todaysPrices = allPrices.filter(({ date, timing }) => {
     // from the docs: moment().isSame() has undefined behavior and should not be used!
     const dateMoment = moment(date);
-    return dateMoment.isSame(currentTime, "day");
+    const typeRegex = new Regex(isSunday ? "Daisy" : "Nook", "i");
+    const isType = typeRegex.test(timing);
+    return dateMoment.isSame(currentTime, "day") && isType;
   });
 
   const bestPrice = isSunday
