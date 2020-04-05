@@ -17,7 +17,7 @@ const execute = async ({ msg, Price }) => {
   const todaysPrices = allPrices.filter(({ date, timing }) => {
     // from the docs: moment().isSame() has undefined behavior and should not be used!
     const dateMoment = moment(date);
-    const typeRegex = new Regex(isSunday ? "Daisy" : "Nook", "i");
+    const typeRegex = new RegExp(isSunday ? "Daisy" : "Nook", "i");
     const isType = typeRegex.test(timing);
     return dateMoment.isSame(currentTime, "day") && isType;
   });
