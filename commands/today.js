@@ -19,7 +19,7 @@ const execute = async ({ msg, Price }) => {
     const dateMoment = moment(date).tz(process.env.TIMEZONE);
     const typeRegex = new RegExp(isSunday ? "Daisy" : "Nook", "i");
     const isType = typeRegex.test(timing);
-    return dateMoment.isSame(currentTime, "day") && isType;
+    return currentTime.isSame(dateMoment, "day") && isType;
   });
 
   const bestPrice = isSunday
