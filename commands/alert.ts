@@ -1,4 +1,6 @@
-const execute = async ({ msg, args: [npc, value], Alert }) => {
+import { ExecuteFn } from "../commands";
+
+const execute: ExecuteFn = async ({ msg, args: [npc, value], Alert }) => {
   npc = npc.toLowerCase();
   if (npc !== "nook" && npc !== "daisy") {
     return msg.channel.send(
@@ -8,11 +10,11 @@ const execute = async ({ msg, args: [npc, value], Alert }) => {
 
   if (value === "clear") {
     const alert = await Alert.findOne({ user: msg.author.id }).exec();
-    const newAlertData = alert.toObject();
+    const newAlertData = alert?.toObject();
     delete newAlertData[npc];
 
-    alert.overwrite(newAlertData);
-    await alert.save();
+    alert?.overwrite(newAlertData);
+    await alert?.save();
     const dmChannel = await msg.author.createDM();
     await dmChannel.send(
       `Price alert cleared for ${npc === "nook" ? "Nook" : "Daisy"}`
@@ -20,12 +22,12 @@ const execute = async ({ msg, args: [npc, value], Alert }) => {
     return msg.react("✅");
   }
 
-  value = parseInt(value);
+  const numValue = parseInt(value);
 
-  if (!value || isNaN(value)) {
+  if (!value || isNaN(numValue)) {
     return msg.channel.send("You must give a price to set.");
   }
-  const updateData = { [npc]: value };
+  const updateData = { [npc]: numValue };
   const alert = await Alert.findOne({ user: msg.author.id }).exec();
 
   let hasAlert;
@@ -41,14 +43,14 @@ const execute = async ({ msg, args: [npc, value], Alert }) => {
   await dmChannel.send(
     `Price alert ${hasAlert ? "updated" : "registered"} for ${
       npc === "nook" ? "Nook" : "Daisy"
-    } at ${value}`
+    } at ${numValue}`
   );
   msg.react("✅");
 };
 
-module.exports = {
+export default {
   name: "alert",
   description:
     "Registers a threshold for buying or selling to have the bot send you a DM",
-  execute
+  execute,
 };

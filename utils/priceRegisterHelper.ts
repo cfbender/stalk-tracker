@@ -1,11 +1,23 @@
-const moment = require("moment-timezone");
-const statsCommand = require("../commands/stats");
-const todayCommand = require("../commands/today");
+import moment from "moment-timezone";
+import statsCommand from "../commands/stats";
+import todayCommand from "../commands/today";
+import Discord from "discord.js";
+import { Model } from "mongoose";
+import { IAlert } from "../models/Alert";
+import { IPrice } from "../models/Price";
 
-const getPrices = async ({ Price, npc, currentTime }) => {
+const getPrices = async ({
+  Price,
+  npc,
+  currentTime,
+}: {
+  Price: Model<IPrice, {}>;
+  npc: "Nook" | "Daisy";
+  currentTime: moment.Moment;
+}) => {
   const allPrices = await Price.find({}).exec();
   const npcPrices = allPrices
-    .filter(price => price.npc === npc)
+    .filter((price) => price.npc === npc)
     .map(({ price }) => price)
     .sort((a, b) => a - b);
   const todaysBest = allPrices
@@ -17,13 +29,23 @@ const getPrices = async ({ Price, npc, currentTime }) => {
     .sort((a, b) => (currentTime.day() === 0 ? a - b : b - a))[0]; //sort ascending on Sunday, else descending
 
   const records = {
-    lowestEver: npcPrices[0],
-    highestEver: npcPrices.slice(-1).pop()
+    lowestEver: npcPrices[0] || 0,
+    highestEver: npcPrices.slice(-1).pop() || 0,
   };
   return { todaysBest, records };
 };
 
-const generateMessage = ({ value, todaysBest, records, npc }) => {
+const generateMessage = ({
+  value,
+  todaysBest,
+  records,
+  npc,
+}: {
+  value: number;
+  todaysBest: number;
+  records: { lowestEver: number; highestEver: number };
+  npc: "Nook" | "Daisy";
+}) => {
   let updateAllTime = false;
   let updateToday = false;
 
@@ -43,7 +65,6 @@ const generateMessage = ({ value, todaysBest, records, npc }) => {
       }
       break;
   }
-
   if (value < records.lowestEver) {
     updateAllTime = true;
     message += ` New lowest ${npc} price ever!`;
@@ -56,30 +77,58 @@ const generateMessage = ({ value, todaysBest, records, npc }) => {
   return { message, updateAllTime, updateToday };
 };
 
-const getAlerts = async ({ Alert, npc, value }) => {
+const getAlerts = async ({
+  Alert,
+  value,
+}: {
+  Alert: Model<IAlert, {}>;
+  value: number;
+}) => {
   const alerts = await Alert.find({}).exec();
   return alerts
-    ? alerts.filter(({ [npc.toLowerCase()]: alertPrice }) =>
-        npc === "Nook" ? alertPrice <= value : alertPrice >= value
+    ? alerts.filter(({ nook, daisy }) =>
+        nook ? nook <= value : daisy ? daisy >= value : false
       )
     : [];
 };
-module.exports = async ({
+
+interface PriceHelperArgs {
+  msg: Discord.Message;
+  value: string;
+  npc: "Nook" | "Daisy";
+  updateChannel: Discord.TextChannel;
+  Price: Model<IPrice, {}>;
+  Alert: Model<IAlert, {}>;
+  bot: Discord.Client;
+}
+
+type PriceHelper = ({
   msg,
   value,
   npc,
   updateChannel,
   Price,
   Alert,
-  bot
-}) => {
-  value = parseInt(value);
+  bot,
+}: PriceHelperArgs) => Promise<string>;
 
-  if (!value || isNaN(value)) {
-    return msg.channel.send("You must give a price to register.");
+export const helper: PriceHelper = async ({
+  msg,
+  value,
+  npc,
+  updateChannel,
+  Price,
+  Alert,
+  bot,
+}) => {
+  const numValue = parseInt(value);
+
+  if (!numValue || isNaN(numValue)) {
+    return "You must give a price to register.";
   }
 
-  const currentTime = moment().tz(process.env.TIMEZONE);
+  const timezone = process.env.TIMEZONE || "America/Denver";
+  const currentTime = moment().tz(timezone);
 
   //check for day of week
   if (currentTime.format("dddd") === "Sunday" && npc === "Nook") {
@@ -101,18 +150,18 @@ module.exports = async ({
       : "Afternoon";
 
   const { message, updateAllTime, updateToday } = generateMessage({
-    value,
+    value: numValue,
     todaysBest,
     records,
-    npc
+    npc,
   });
 
   let newPrice = new Price({
     user,
     npc,
-    price: value,
+    price: numValue,
     timing: type,
-    date: currentTime.toDate()
+    date: currentTime.toDate(),
   });
 
   try {
@@ -124,28 +173,52 @@ module.exports = async ({
   if (sendUpdates) {
     if (updateAllTime || updateToday) {
       updateChannel.send(message);
-      if (updateAllTime) {
-        statsCommand.execute({ msg: { channel: updateChannel }, Price });
-      }
+      const newMsg = Object.assign({}, msg);
+      newMsg.channel = updateChannel;
 
+      if (updateAllTime) {
+        statsCommand.execute({
+          msg: newMsg,
+          Price,
+          Alert,
+          args: [""],
+          updateChannel,
+          bot,
+        });
+      }
       if (updateToday) {
-        todayCommand.execute({ msg: { channel: updateChannel }, Price });
+        msg.channel = updateChannel;
+        todayCommand.execute({
+          msg: newMsg,
+          Price,
+          Alert,
+          args: [""],
+          updateChannel,
+          bot,
+        });
       }
     }
   }
 
-  const firedAlerts = await getAlerts({ Alert, npc, value });
+  const firedAlerts = await getAlerts({ Alert, value: numValue });
 
-  firedAlerts.forEach(async alert => {
+  firedAlerts.forEach(async (alert) => {
     const user = await bot.users.fetch(alert.user);
     const dmChannel = await user.createDM();
 
     await dmChannel.send(
       `Your threshold of of ${
-        alert[npc.toLowerCase()]
-      } for ${npc} has been hit! Current price is ${value}.`
+        alert.toObject()[npc.toLowerCase()]
+      } for ${npc} has been hit! Current price is ${numValue}.`
     );
-    todayCommand.execute({ msg: { channel: dmChannel }, Price });
+    todayCommand.execute({
+      msg: Object.assign(msg, { channel: dmChannel }),
+      Price,
+      Alert,
+      args: [""],
+      updateChannel,
+      bot,
+    });
   });
 
   return message;
