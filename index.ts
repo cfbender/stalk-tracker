@@ -1,13 +1,12 @@
 import dotenv from "dotenv";
+import path from "path";
 import mongoose from "mongoose";
 import Discord from "discord.js";
 import { commands, Command } from "./commands";
 import { models } from "./models";
 const { Price, Alert } = models;
+dotenv.config({ path: path.join(__dirname, "..", ".env") });
 const TOKEN = process.env.TOKEN;
-
-dotenv.config();
-
 const bot = new Discord.Client();
 
 try {

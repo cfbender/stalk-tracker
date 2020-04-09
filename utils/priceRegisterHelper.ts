@@ -173,9 +173,12 @@ export const helper: PriceHelper = async ({
   if (sendUpdates) {
     if (updateAllTime || updateToday) {
       updateChannel.send(message);
+      const newMsg = Object.assign({}, msg);
+      newMsg.channel = updateChannel;
+
       if (updateAllTime) {
         statsCommand.execute({
-          msg: Object.assign(msg, { channel: updateChannel }),
+          msg: newMsg,
           Price,
           Alert,
           args: [""],
@@ -183,11 +186,10 @@ export const helper: PriceHelper = async ({
           bot,
         });
       }
-
       if (updateToday) {
         msg.channel = updateChannel;
         todayCommand.execute({
-          msg: Object.assign(msg, { channel: updateChannel }),
+          msg: newMsg,
           Price,
           Alert,
           args: [""],

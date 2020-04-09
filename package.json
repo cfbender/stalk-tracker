@@ -20,9 +20,8 @@
     "moment-timezone": "^0.5.28",
     "mongoose": "^5.9.7"
   },
-  "type": "module",
   "scripts": {
-    "start": "node index.js"
+    "start": "tsc && node ./out/index.js"
   },
   "devDependencies": {
     "typescript": "^3.8.3"
