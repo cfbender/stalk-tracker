@@ -1,1 +1,1 @@
-worker: node index.js
+worker: tsc && node ./out/index.js
