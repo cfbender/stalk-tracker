@@ -1,7 +1,8 @@
-const Discord = require("discord.js");
+import { MessageEmbed } from "discord.js";
+import { ExecuteFn } from "../commands";
 
-const execute = ({ msg }) => {
-  const embed = new Discord.MessageEmbed()
+const execute: ExecuteFn = async ({ msg }) => {
+  const embed = new MessageEmbed()
     .setTitle("Stalk Tracker Commands")
     .setColor(0x00ae86)
     .setThumbnail(
@@ -26,11 +27,12 @@ const execute = ({ msg }) => {
       "Will send you a DM when the price threshold is met. Usage: `stalk! alert <nook || daisy> <price>` to reset: `stalk! alert <nook || daisy> clear`"
     );
 
-  msg.channel.send(embed);
+  await msg.channel.send(embed);
+  return;
 };
 
-module.exports = {
+export default {
   name: "help",
   description: "Shows commands and usage",
-  execute
+  execute,
 };

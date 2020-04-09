@@ -1,3 +1,4 @@
 node_modules/
 .env
 stalk_data.csv
+yarn-error.log

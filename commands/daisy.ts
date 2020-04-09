@@ -1,12 +1,13 @@
-const helper = require("../utils/priceRegisterHelper");
+import { ExecuteFn } from "../commands";
+import { helper } from "../utils/priceRegisterHelper";
 
-const execute = async ({
+const execute: ExecuteFn = async ({
   msg,
   args: [value],
   updateChannel,
   Price,
   bot,
-  Alert
+  Alert,
 }) => {
   const message = await helper({
     msg,
@@ -15,13 +16,13 @@ const execute = async ({
     updateChannel,
     Price,
     Alert,
-    bot
+    bot,
   });
   msg.channel.send(message);
 };
 
-module.exports = {
+export default {
   name: "daisy",
   description: "Registers a price that Daisy is selling for",
-  execute
+  execute,
 };
