@@ -1,1 +1,1 @@
-worker: tsc && node ./out/index.js
+worker: yarn start
