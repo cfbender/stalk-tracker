@@ -22,7 +22,7 @@ You will need to set up:
 + `MONGOGB_URI` the URI of the mongoDB instance given to you by Heroku
 + `SEND_UPDATES` A boolean flag (`true` or `false`) for whether or not to post updates to the update channel
 + `COMMAND_CHANNEL` the ID of the channel to run commands in
-+ `UPDATE_CHANNEL` the ID of teh channel to post updates to 
++ `UPDATE_CHANNEL` the ID of the channel to post updates to 
 + `TIMEZONE` In standard ISO format such as `America/Denver`
 + `TOKEN` The Discord bot token for it to log into.
   
