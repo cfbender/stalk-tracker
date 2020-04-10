@@ -4,9 +4,13 @@
     "repository": "https://github.com/cfbender/stalk-tracker",
     "logo": "https://vignette3.wikia.nocookie.net/animalcrossing/images/b/b7/Turnip.png/revision/latest?cb=20100726212427",
     "keywords": ["animal", "crossing", "turnip", "tracker", "discord", "bot"],
+    "env": {
+        "SECRET_TOKEN": {
+          "description": "A secret key for verifying the integrity of signed cookies."
+        },
     "addons": [
         {
-          "plan": "mongolab:shared-single-small",
+          "plan": "mongolab:sandbox",
           "as": "MONGO"
         }
       ]
