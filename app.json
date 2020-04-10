@@ -5,9 +5,26 @@
     "logo": "https://vignette3.wikia.nocookie.net/animalcrossing/images/b/b7/Turnip.png/revision/latest?cb=20100726212427",
     "keywords": ["animal", "crossing", "turnip", "tracker", "discord", "bot"],
     "env": {
-        "SECRET_TOKEN": {
-          "description": "A secret key for verifying the integrity of signed cookies."
+        "MONGOGB_URI": {
+          "description": "The URI of the mongoDB instance given to you by Heroku. Leave this how it is for now, but FILL IT IN LATER with the URI from mLab",
+          "value": "mongodb://"
         },
+        "SEND_UPDATES": {
+            "description" :"A boolean flag (`true` or `false`) for whether or not to post updates to the update channel"
+        },
+        "COMMAND_CHANNEL": {
+            "description": "The ID of the channel to run commands in"
+          },
+          "UPDATE_CHANNEL": {
+            "description": "the ID of teh channel to post updates to "
+          },
+          "TIMEZONE": {
+            "description": "In standard ISO format such as `America/Denver`"
+          },
+          "TOKEN": {
+            "description": "The Discord bot token for it to log into."
+          }
+    },
     "addons": [
         {
           "plan": "mongolab:sandbox",
@@ -15,5 +32,5 @@
         }
       ]
   }
-}
+
   
