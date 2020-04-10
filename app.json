@@ -4,12 +4,6 @@
     "repository": "https://github.com/cfbender/stalk-tracker",
     "logo": "https://vignette3.wikia.nocookie.net/animalcrossing/images/b/b7/Turnip.png/revision/latest?cb=20100726212427",
     "keywords": ["animal", "crossing", "turnip", "tracker", "discord", "bot"],
-    "formation": {
-        "worker": {
-          "quantity": 1,
-          "size": "Standard-1X"
-        }
-    },
     "env": {
         "MONGOGB_URI": {
           "description": "The URI of the mongoDB instance given to you by Heroku. Leave this how it is for now, but FILL IT IN LATER with the URI from mLab",
