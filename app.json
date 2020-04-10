@@ -1,0 +1,14 @@
+{
+    "name": "Stalk Tracker",
+    "description": "A discord bot to keep track of turnip prices! ",
+    "repository": "https://github.com/cfbender/stalk-tracker",
+    "logo": "https://vignette3.wikia.nocookie.net/animalcrossing/images/b/b7/Turnip.png/revision/latest?cb=20100726212427",
+    "keywords": ["animal", "crossing", "turnip", "tracker", "discord", "bot"],
+    "addons": [
+        {
+          "plan": "mongolab:shared-single-small",
+          "as": "MONGO"
+        }
+      ]
+  }
+  
