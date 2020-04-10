@@ -8,7 +8,8 @@
         "worker": {
           "quantity": 1,
           "size": "Standard-1X"
-        },
+        }
+    },
     "env": {
         "MONGOGB_URI": {
           "description": "The URI of the mongoDB instance given to you by Heroku. Leave this how it is for now, but FILL IT IN LATER with the URI from mLab",
