@@ -131,6 +131,10 @@ export const helper: PriceHelper = async ({
     await msg.channel.send("Nice.")
   }
 
+  if(numValue === 420) {
+    await msg.channel.send("https://media.giphy.com/media/KpAPQVW9lWnWU/giphy.gif")
+  }
+
   const timezone = process.env.TIMEZONE || "America/Denver";
   const currentTime = moment().tz(timezone);
 
