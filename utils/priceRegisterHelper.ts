@@ -1,4 +1,5 @@
 import moment from "moment-timezone";
+import cloneDeep from "lodash.clonedeep";
 import statsCommand from "../commands/stats";
 import todayCommand from "../commands/today";
 import Discord from "discord.js";
@@ -127,12 +128,14 @@ export const helper: PriceHelper = async ({
     return "You must give a price to register.";
   }
 
-  if(numValue === 69) {
-    await msg.channel.send("Nice.")
+  if (numValue === 69) {
+    await msg.channel.send("Nice.");
   }
 
-  if(numValue === 420) {
-    await msg.channel.send("https://media.giphy.com/media/KpAPQVW9lWnWU/giphy.gif")
+  if (numValue === 420) {
+    await msg.channel.send(
+      "https://media.giphy.com/media/KpAPQVW9lWnWU/giphy.gif"
+    );
   }
 
   const timezone = process.env.TIMEZONE || "America/Denver";
@@ -181,7 +184,7 @@ export const helper: PriceHelper = async ({
   if (sendUpdates) {
     if (updateAllTime || updateToday) {
       await updateChannel.send(message);
-      const newMsg = Object.assign({}, msg);
+      const newMsg = cloneDeep(msg);
       newMsg.channel = updateChannel;
 
       if (updateAllTime) {
@@ -219,7 +222,7 @@ export const helper: PriceHelper = async ({
         alert.toObject()[npc.toLowerCase()]
       } for ${npc} has been hit! Current price is ${numValue}.`
     );
-    const newMsg = Object.assign({}, msg);
+    const newMsg = cloneDeep(msg);
     newMsg.channel = updateChannel;
     await todayCommand.execute({
       msg: newMsg,
