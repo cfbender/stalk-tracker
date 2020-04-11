@@ -9,7 +9,7 @@ import { IPrice } from "../models/Price";
 const getPrices = async ({
   Price,
   npc,
-  currentTime,
+  currentTime
 }: {
   Price: Model<IPrice, {}>;
   npc: "Nook" | "Daisy";
@@ -17,7 +17,7 @@ const getPrices = async ({
 }) => {
   const allPrices = await Price.find({}).exec();
   const npcPrices = allPrices
-    .filter((price) => price.npc === npc)
+    .filter(price => price.npc === npc)
     .map(({ price }) => price)
     .sort((a, b) => a - b);
   const todaysBest = allPrices
@@ -30,7 +30,7 @@ const getPrices = async ({
 
   const records = {
     lowestEver: npcPrices[0] || 0,
-    highestEver: npcPrices.slice(-1).pop() || 0,
+    highestEver: npcPrices.slice(-1).pop() || 0
   };
   return { todaysBest, records };
 };
@@ -39,7 +39,7 @@ const generateMessage = ({
   value,
   todaysBest,
   records,
-  npc,
+  npc
 }: {
   value: number;
   todaysBest: number;
@@ -79,7 +79,7 @@ const generateMessage = ({
 
 const getAlerts = async ({
   Alert,
-  value,
+  value
 }: {
   Alert: Model<IAlert, {}>;
   value: number;
@@ -109,7 +109,7 @@ type PriceHelper = ({
   updateChannel,
   Price,
   Alert,
-  bot,
+  bot
 }: PriceHelperArgs) => Promise<string>;
 
 export const helper: PriceHelper = async ({
@@ -119,7 +119,7 @@ export const helper: PriceHelper = async ({
   updateChannel,
   Price,
   Alert,
-  bot,
+  bot
 }) => {
   const numValue = parseInt(value);
 
@@ -157,7 +157,7 @@ export const helper: PriceHelper = async ({
     value: numValue,
     todaysBest,
     records,
-    npc,
+    npc
   });
 
   let newPrice = new Price({
@@ -165,7 +165,7 @@ export const helper: PriceHelper = async ({
     npc,
     price: numValue,
     timing: type,
-    date: currentTime.toDate(),
+    date: currentTime.toDate()
   });
 
   try {
@@ -176,29 +176,29 @@ export const helper: PriceHelper = async ({
 
   if (sendUpdates) {
     if (updateAllTime || updateToday) {
-      updateChannel.send(message);
+      await updateChannel.send(message);
       const newMsg = Object.assign({}, msg);
       newMsg.channel = updateChannel;
 
       if (updateAllTime) {
-        statsCommand.execute({
+        await statsCommand.execute({
           msg: newMsg,
           Price,
           Alert,
           args: [""],
           updateChannel,
-          bot,
+          bot
         });
       }
       if (updateToday) {
         msg.channel = updateChannel;
-        todayCommand.execute({
+        await todayCommand.execute({
           msg: newMsg,
           Price,
           Alert,
           args: [""],
           updateChannel,
-          bot,
+          bot
         });
       }
     }
@@ -206,7 +206,7 @@ export const helper: PriceHelper = async ({
 
   const firedAlerts = await getAlerts({ Alert, value: numValue });
 
-  firedAlerts.forEach(async (alert) => {
+  firedAlerts.forEach(async alert => {
     const user = await bot.users.fetch(alert.user);
     const dmChannel = await user.createDM();
 
@@ -215,13 +215,15 @@ export const helper: PriceHelper = async ({
         alert.toObject()[npc.toLowerCase()]
       } for ${npc} has been hit! Current price is ${numValue}.`
     );
-    todayCommand.execute({
-      msg: Object.assign(msg, { channel: dmChannel }),
+    const newMsg = Object.assign({}, msg);
+    newMsg.channel = updateChannel;
+    await todayCommand.execute({
+      msg: newMsg,
       Price,
       Alert,
       args: [""],
       updateChannel,
-      bot,
+      bot
     });
   });
 
