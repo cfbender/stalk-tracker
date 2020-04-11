@@ -127,6 +127,10 @@ export const helper: PriceHelper = async ({
     return "You must give a price to register.";
   }
 
+  if(numValue === 69) {
+    await msg.channel.send("Nice.")
+  }
+
   const timezone = process.env.TIMEZONE || "America/Denver";
   const currentTime = moment().tz(timezone);
 
