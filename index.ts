@@ -44,7 +44,8 @@ for (let command in commands) {
 
 bot.on("message", (msg) => {
   let [trigger, command, ...args] = msg.content.split(/ +/);
-  if (trigger !== "stalk!") return;
+  if(trigger === "stalk!") return msg.channel.send("Did you mean `!stalk`?");
+  if (trigger !== "!stalk") return;
 
   if (msg.channel.id !== process.env.COMMAND_CHANNEL) {
     return msg.channel.send(
