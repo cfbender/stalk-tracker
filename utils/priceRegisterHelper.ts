@@ -198,7 +198,6 @@ export const helper: PriceHelper = async ({
         });
       }
       if (updateToday) {
-        msg.channel = updateChannel;
         await todayCommand.execute({
           msg: newMsg,
           Price,
