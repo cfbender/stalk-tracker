@@ -184,12 +184,11 @@ export const helper: PriceHelper = async ({
   if (sendUpdates) {
     if (updateAllTime || updateToday) {
       await updateChannel.send(message);
-      const newMsg = cloneDeep(msg);
-      newMsg.channel = updateChannel;
 
       if (updateAllTime) {
         await statsCommand.execute({
-          msg: newMsg,
+          //@ts-ignore
+          msg: { channel: updateChannel },
           Price,
           Alert,
           args: [""],
@@ -199,7 +198,8 @@ export const helper: PriceHelper = async ({
       }
       if (updateToday) {
         await todayCommand.execute({
-          msg: newMsg,
+          //@ts-ignore
+          msg: { channel: updateChannel },
           Price,
           Alert,
           args: [""],

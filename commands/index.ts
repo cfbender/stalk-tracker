@@ -8,6 +8,7 @@ import Nook from "./nook";
 import Help from "./help";
 import Today from "./today";
 import Alert from "./alert";
+import Calc from "./calc";
 
 interface ExecuteArgs {
   msg: Discord.Message;
@@ -24,7 +25,7 @@ export type ExecuteFn = ({
   updateChannel,
   Price,
   Alert,
-  bot,
+  bot
 }: ExecuteArgs) => Promise<any>;
 
 export interface Command {
@@ -39,4 +40,5 @@ export const commands: { [key: string]: Command } = {
   Help,
   Today,
   Alert,
+  Calc
 };
