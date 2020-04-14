@@ -4,8 +4,9 @@ const execute: ExecuteFn = async ({ msg, Price }) => {
   const prices = await Price.find({ user: msg.author.username });
   const timezone = process.env.TIMEZONE || "America/Denver";
   const lastSunday = moment().day(0);
+  const today = moment().tz(timezone);
   const daysSinceSunday =
-    lastSunday.fromNow(true)[0] === "a"
+    lastSunday.from(today)[0] === "a"
       ? 1
       : parseInt(lastSunday.fromNow(true)[0]);
 
