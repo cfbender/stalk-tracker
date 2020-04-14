@@ -1,7 +1,20 @@
 import { ExecuteFn } from ".";
 import moment from "moment-timezone";
-const execute: ExecuteFn = async ({ msg, Price }) => {
-  const prices = await Price.find({ user: msg.author.username });
+import Discord from "discord.js";
+
+const execute: ExecuteFn = async ({ msg, args, Price, bot }) => {
+  let user: string = msg.author.username;
+  if (args[0]) {
+    if (args[0].includes("@")) {
+      const match = args[0].match(/[0-9]+/);
+      if (match) {
+        const discordUser = await bot.users.fetch(match[0]);
+        user = discordUser.username;
+      }
+    }
+  }
+
+  const prices = await Price.find({ user });
   const timezone = process.env.TIMEZONE || "America/Denver";
   const lastSunday = moment()
     .tz(timezone)
@@ -24,7 +37,7 @@ const execute: ExecuteFn = async ({ msg, Price }) => {
       `**Warning**: It has been ${daysSinceSunday} since last Sunday and only ${thisWeek.length} prices are recorded. There may be incomplete data in the database this week for your username.`
     );
   }
-  msg.channel.send(`Current price chart for ${msg.author.username}: ${link}`);
+  msg.channel.send(`Current price chart for ${user}: ${link}`);
 };
 
 export default {
