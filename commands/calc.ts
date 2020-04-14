@@ -6,9 +6,7 @@ const execute: ExecuteFn = async ({ msg, Price }) => {
   const lastSunday = moment().day(0);
   const today = moment().tz(timezone);
   const daysSinceSunday =
-    lastSunday.from(today)[0] === "a"
-      ? 1
-      : parseInt(lastSunday.fromNow(true)[0]);
+    lastSunday.from(today)[0] === "a" ? 1 : parseInt(lastSunday.from(today)[0]);
 
   const thisWeek = prices
     .filter(price =>
