@@ -3,10 +3,11 @@ import moment from "moment-timezone";
 const execute: ExecuteFn = async ({ msg, Price }) => {
   const prices = await Price.find({ user: msg.author.username });
   const timezone = process.env.TIMEZONE || "America/Denver";
-  const lastSunday = moment().day(0);
+  const lastSunday = moment()
+    .tz(timezone)
+    .day(0);
   const today = moment().tz(timezone);
-  const daysSinceSunday =
-    lastSunday.from(today)[0] === "a" ? 1 : parseInt(lastSunday.from(today)[0]);
+  const daysSinceSunday = moment.duration(today.diff(lastSunday)).days();
 
   const thisWeek = prices
     .filter(price =>
