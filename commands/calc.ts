@@ -24,7 +24,7 @@ const execute: ExecuteFn = async ({ msg, Price }) => {
       `**Warning**: It has been ${daysSinceSunday} since last Sunday and only ${thisWeek.length} prices are recorded. There may be incomplete data in the database this week for your username.`
     );
   }
-  msg.channel.send(link);
+  msg.channel.send(`Current price chart for ${msg.author.username}: ${link}`);
 };
 
 export default {
