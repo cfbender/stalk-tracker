@@ -29,7 +29,11 @@ const execute: ExecuteFn = async ({ msg, args, Price, bot }) => {
         .isSameOrAfter(lastSunday, "day")
     )
     .map(data => data.price);
-
+  
+  if(prices.length === 0 || thisWeek.length === 0) {
+    return msg.channel.send(`No data found for user ${user}`);
+  }
+  
   const link = `https://ac-turnip.com/#${thisWeek.join(",")}`;
 
   if (thisWeek.length < daysSinceSunday * 2) {
