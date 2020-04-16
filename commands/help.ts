@@ -28,7 +28,7 @@ const execute: ExecuteFn = async ({ msg }) => {
     )
     .addField(
       "**Calc**",
-      "Will respond with a share link for ac-turnip.com with this weeks data. Usage: `!stalk calc`"
+      "Will respond with a share link for ac-turnip.com with this weeks data for you if blank or another user when mentioned. Usage: `!stalk calc <optional: @username>`"
     );
 
   await msg.channel.send(embed);
