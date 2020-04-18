@@ -34,7 +34,7 @@ const execute: ExecuteFn = async ({ msg, args, Price, bot }) => {
     return msg.channel.send(`No data found for user ${user}`);
   }
   
-  const link = `https://ac-turnip.com/#${thisWeek.join(",")}`;
+  const link = `https://ac-turnip.com/#${thisWeek.join("-")}`;
 
   if (thisWeek.length < daysSinceSunday * 2) {
     msg.channel.send(
