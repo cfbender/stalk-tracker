@@ -38,7 +38,7 @@ const execute: ExecuteFn = async ({ msg, args, Price, bot }) => {
 
   if (thisWeek.length < daysSinceSunday * 2) {
     msg.channel.send(
-      `**Warning**: It has been ${daysSinceSunday} since last Sunday and only ${thisWeek.length} prices are recorded. There may be incomplete data in the database this week for your username.`
+      `**Warning**: It has been ${daysSinceSunday} ${daysSinceSunday === 1 ? "day" : "days"} since last Sunday and only ${thisWeek.length} prices are recorded. There may be incomplete data in the database this week for your username.`
     );
   }
   msg.channel.send(`Current price chart for ${user}: ${link}`);
