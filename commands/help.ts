@@ -29,6 +29,10 @@ const execute: ExecuteFn = async ({ msg }) => {
     .addField(
       "**Calc**",
       "Will respond with a share link for ac-turnip.com with this weeks data for you if blank or another user when mentioned. Usage: `!stalk calc <optional: @username>`"
+    )
+    .addField(
+      "**TZ**",
+      "Will add a timezone role for the user that sends the command. Usage: `!stalk tz <eastern || central || mountain || pacific>`"
     );
 
   await msg.channel.send(embed);
@@ -38,5 +42,5 @@ const execute: ExecuteFn = async ({ msg }) => {
 export default {
   name: "help",
   description: "Shows commands and usage",
-  execute,
+  execute
 };

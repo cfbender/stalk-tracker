@@ -13,7 +13,7 @@ This is a discord bot that will allow a server to track their turnip prices toge
 
 ## How to Deploy
 
-Can be deployed on Heroku for free! Click the below button to set up your deployment. You will need to have already created a bot account for it to log into. You can follow a tutorial such as [this one](https://medium.com/davao-js/2019-tutorial-creating-your-first-simple-discord-bot-47fc836a170b) (under the "Generating Token Key" and "Adding bot to our test server" sections) to get that set up.
+Can be deployed on Heroku for free! Click the below button to set up your deployment. You will need to have already created a bot account for it to log into. You can follow a tutorial such as [this one](https://medium.com/davao-js/2019-tutorial-creating-your-first-simple-discord-bot-47fc836a170b) (under the "Generating Token Key" and "Adding bot to our test server" sections) to get that set up. You may need to adjust the permissions, or use `268459072` for the permissions integer as I did.
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
 

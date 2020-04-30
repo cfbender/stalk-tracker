@@ -9,6 +9,7 @@ import Help from "./help";
 import Today from "./today";
 import Alert from "./alert";
 import Calc from "./calc";
+import Tz from "./tz";
 
 interface ExecuteArgs {
   msg: Discord.Message;
@@ -40,5 +41,6 @@ export const commands: { [key: string]: Command } = {
   Help,
   Today,
   Alert,
-  Calc
+  Calc,
+  Tz
 };
