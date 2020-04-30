@@ -7,6 +7,21 @@ import { Model } from "mongoose";
 import { IAlert } from "../models/Alert";
 import { IPrice } from "../models/Price";
 
+const convertTZRole = (role: string): string => {
+  switch (role) {
+    case "Eastern Time":
+      return "America/New_York";
+    case "Central Time":
+      return "America/Chicago";
+    case "Mountain Time":
+      return "America/Denver";
+    case "Pacific Time":
+      return "America/Los_Angeles";
+    default:
+      return process.env.TIMEZONE || "America/Denver";
+  }
+};
+
 const getPrices = async ({
   Price,
   npc,
@@ -137,8 +152,13 @@ export const helper: PriceHelper = async ({
       "https://media.giphy.com/media/KpAPQVW9lWnWU/giphy.gif"
     );
   }
+  const userTimeRole = msg.member?.roles.cache
+    .map(role => role.name)
+    .filter(name => name.match(/Time/i))?.[0];
 
-  const timezone = process.env.TIMEZONE || "America/Denver";
+  const timezone = userTimeRole
+    ? convertTZRole(userTimeRole)
+    : process.env.TIMEZONE || "America/Denver";
   const currentTime = moment().tz(timezone);
 
   //check for day of week
