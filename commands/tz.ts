@@ -13,7 +13,7 @@ const execute: ExecuteFn = async ({
 
   if (!timezones.includes(value)) {
     return msg.channel.send(
-      "You must include a timezone value of eastern || central || mountain || pacific"
+      `You must include a timezone value from one of \`${timezones.join(" || ")}\``
     );
   }
 
