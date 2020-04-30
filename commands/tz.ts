@@ -22,23 +22,27 @@ const execute: ExecuteFn = async ({
   );
   const userRoles = msg.member?.roles;
 
-  let role;
+  let roleName = "";
+
   switch (value) {
     case "eastern":
-      role = timezoneRoles?.filter(role => role.name === "Eastern Time");
+      roleName = "Eastern Time";
       break;
     case "central":
-      role = timezoneRoles?.filter(role => role.name === "Central Time");
+      roleName = "Central Time";
       break;
     case "mountain":
-      role = timezoneRoles?.filter(role => role.name === "Mountain Time");
+      roleName = "Mountain Time";
       break;
     case "pacific":
-      role = timezoneRoles?.filter(role => role.name === "Pacific Time");
+      roleName = "Pacific Time";
       break;
   }
-  if (role) {
+
+  const role = timezoneRoles?.filter(role => role.name === roleName);
+  if (role && roleName) {
     userRoles?.add(role);
+    return msg.channel.send(`Role added as \`${roleName}\``);
   }
 };
 
