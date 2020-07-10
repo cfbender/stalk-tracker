@@ -18,7 +18,7 @@ try {
 let commandChannel: Discord.TextChannel;
 let updateChannel: Discord.TextChannel;
 
-const mongodb_uri = process.env.MONGODB_URI || "mongodb://127.0.0.1:27017";
+const mongodb_uri = process.env.DB_URI || "mongodb://127.0.0.1:27017";
 mongoose.set("useUnifiedTopology", true);
 mongoose.set("useFindAndModify", false);
 mongoose.connect(mongodb_uri, { useNewUrlParser: true });
@@ -44,7 +44,7 @@ for (let command in commands) {
 
 bot.on("message", (msg) => {
   let [trigger, command, ...args] = msg.content.split(/ +/);
-  if(trigger === "stalk!") return msg.channel.send("Did you mean `!stalk`?");
+  if (trigger === "stalk!") return msg.channel.send("Did you mean `!stalk`?");
   if (trigger !== "!stalk") return;
 
   if (msg.channel.id !== process.env.COMMAND_CHANNEL) {
