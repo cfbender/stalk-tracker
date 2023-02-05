@@ -20,7 +20,7 @@
     "lodash.sortby": "^4.7.0",
     "moment": "^2.29.4",
     "moment-timezone": "^0.5.35",
-    "mongoose": "^5.9.7"
+    "mongoose": "^5.13.15"
   },
   "scripts": {
     "start": "node out/index.js",
